@@ -30,12 +30,12 @@ export default function Home({ productsData }) {
     )
 }
 
-export const getStaticProps = async () => {
-    const res = await axios.get(`/api/products`);
-    return {
-        props: {
-            productsData: res.data,
-        },
-        revalidate: 10
-    };
-};
+// export const getStaticProps = async () => {
+//     const res = await axios.get(`/api/products`);
+//     return {
+//         props: {
+//             productsData: res.data,
+//         },
+//         revalidate: 10
+//     };
+// };

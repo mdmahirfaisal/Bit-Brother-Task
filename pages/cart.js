@@ -12,12 +12,12 @@ export default function cart({ cartData }) {
     )
 }
 
-export const getStaticProps = async () => {
-    const res = await axios.get(`/api/cart`);
-    return {
-        props: {
-            cartData: res.data,
-        },
-        revalidate: 10
-    };
-};
+// export const getStaticProps = async () => {
+//     const res = await axios.get(`/api/cart`);
+//     return {
+//         props: {
+//             cartData: res.data,
+//         },
+//         revalidate: 10
+//     };
+// };
