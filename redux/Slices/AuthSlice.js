@@ -11,7 +11,7 @@ export const AuthSlice = createSlice({
     initialState,
     reducers: {
         // login with googl
-        handleSignInWithGoogle: (state, { payload }) => {
+        handleSignedInUser: (state, { payload }) => {
             state.user = payload;
         },
         // login with googl
@@ -22,6 +22,6 @@ export const AuthSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { handleSignInWithGoogle, handleLoading } = AuthSlice.actions
+export const { handleSignedInUser, handleLoading } = AuthSlice.actions
 
 export default AuthSlice.reducer

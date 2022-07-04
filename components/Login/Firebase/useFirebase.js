@@ -1,15 +1,18 @@
 import { useEffect } from "react";
 import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, } from "firebase/auth";
 import Swal from 'sweetalert2';
-import { handleSignInWithGoogle, handleLoading } from '../../../redux/Slices/AuthSlice';
+import { handleSignedInUser, handleLoading } from '../../../redux/Slices/AuthSlice';
 import { useDispatch } from 'react-redux';
 
 import initializeFirebase from './Firebase';
+import { useRouter } from "next/router";
 // initialize firebase app
 initializeFirebase();
 
 const useFirebase = () => {
     const dispatch = useDispatch();
+    const router = useRouter();
+
     const auth = getAuth();
     const googleProvider = new GoogleAuthProvider();
 
@@ -18,11 +21,17 @@ const useFirebase = () => {
         dispatch(handleLoading(true));
         signInWithPopup(auth, googleProvider)
             .then((result) => {
-                dispatch(handleSignInWithGoogle(result.user))
+                dispatch(handleSignedInUser(result.user))
                 dispatch(handleLoading(false));
+                router.push("/")
             })
             .catch((error) => {
-                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message} `,
+
+                })
             })
             .finally(() => dispatch(handleLoading(false)));
     };
@@ -31,10 +40,16 @@ const useFirebase = () => {
     const registerUser = (email, Password, name) => {
         createUserWithEmailAndPassword(auth, email, Password)
             .then(() => {
-                dispatch(handleSignInWithGoogle({ email, displayName: name }))
+                dispatch(handleSignedInUser({ email, displayName: name }))
+                router.push("/")
             })
             .catch((error) => {
-                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message} `,
+
+                })
             })
             .finally(() => dispatch(handleLoading(false)));
     };
@@ -43,10 +58,16 @@ const useFirebase = () => {
     const loginUser = (email, password) => {
         signInWithEmailAndPassword(auth, email, password)
             .then((user) => {
-                dispatch(handleSignInWithGoogle(user))
+                dispatch(handleSignedInUser(user))
+                router.push("/")
             })
             .catch((error) => {
-                console.log(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `${error.message} `,
+
+                })
             })
             .finally(() => dispatch(handleLoading(false)));
     };
@@ -54,7 +75,7 @@ const useFirebase = () => {
     // Log out user 
     const logOut = () => {
         signOut(auth).then(() => {
-
+            router.push("/")
         }).catch((error) => {
             console.log(error.message);
         })
@@ -66,9 +87,9 @@ const useFirebase = () => {
         dispatch(handleLoading(true))
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                dispatch(handleSignInWithGoogle(user))
+                dispatch(handleSignedInUser(user))
             } else {
-                dispatch(handleSignInWithGoogle({}))
+                dispatch(handleSignedInUser({}))
             }
             dispatch(handleLoading(false))
         })
