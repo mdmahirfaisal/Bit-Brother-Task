@@ -13,7 +13,7 @@ export default function cart({ cartData }) {
 }
 
 export const getStaticProps = async () => {
-    const res = await axios.get(`http://localhost:3000/api/cart`);
+    const res = await axios.get(`/api/cart`);
     return {
         props: {
             cartData: res.data,
