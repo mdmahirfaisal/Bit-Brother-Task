@@ -2,27 +2,12 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 import useFirebase from '../../Login/Firebase/useFirebase';
 
 const Products = ({ productsData }) => {
     const { user } = useSelector(state => state.auth);
-    console.log(productsData);
     const router = useRouter();
-
-    const handleAddToCart = (data) => {
-        data.email = user.email
-        console.log(data);
-        // if (!user?.email) {
-        //     router.push("/login")
-        // }
-        // else {
-        //     axios.post('/api/products', data)
-        //         .then(res => {
-        //             console.log(res);
-        //         })
-        //         .catch(err => console.log(err))
-        // }
-    }
 
 
 
@@ -39,7 +24,7 @@ const Products = ({ productsData }) => {
                         <h2 className='text-2xl md:text-3xl text-center font-semibold'>$ {data.price}</h2>
                     </div>
                     <p className='mt-3 lg:text-lg'>{data.desc}</p>
-                    <button onClick={() => handleAddToCart(data)} className='bg-sky-500 hover:bg-sky-600 py-1 w-full text-white mt-2'>Add to cart</button>
+                    <button onClick={() => router.push(data._id)} className='bg-sky-500 hover:bg-sky-600 py-1 w-full text-white mt-2'>Se details</button>
                 </div>)}
             </div>
         </div>

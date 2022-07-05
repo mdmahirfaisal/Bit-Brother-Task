@@ -1,15 +1,12 @@
 import Head from 'next/head'
-import useFirebase from '../components/Login/Firebase/useFirebase';
 import styles from '../styles/Home.module.css'
-import { useSelector } from 'react-redux';
 import NavigationBar from '../components/Home/NavigationBar/NavigationBar';
 import Header from '../components/Home/Header/Header';
 import Products from '../components/Home/Products/Products';
 import axios from 'axios';
-
+import Footer from '../components/Home/Footer/Footer';
 
 export default function Home({ productsData }) {
-
     return (
         <div className={styles.container}>
             <Head>
@@ -18,12 +15,13 @@ export default function Home({ productsData }) {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
-            <main className="">
+            <main>
                 <NavigationBar />
                 <Header />
                 <div className='max-w-[1280px] mx-auto'>
                     <Products productsData={productsData} />
                 </div>
+                <Footer />
 
             </main>
         </div>
@@ -31,7 +29,7 @@ export default function Home({ productsData }) {
 }
 
 // export const getStaticProps = async () => {
-//     const res = await axios.get(`/api/products`);
+//     const res = await axios.get(`http://localhost:3000/api/products`);
 //     return {
 //         props: {
 //             productsData: res.data,

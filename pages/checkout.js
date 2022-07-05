@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import Cart from '../components/Home/Cart/Cart'
+import Checkout from '../components/Home/Checkout/Checkout'
 import NavigationBar from '../components/Home/NavigationBar/NavigationBar'
 
-export default function IndexCart() {
-    const { user, authLoading } = useSelector(state => state.auth)
+export default function IndexCheckout() {
+    const { user } = useSelector(state => state.auth)
     const router = useRouter()
     useEffect(() => {
         if (!user.email) {
@@ -14,13 +14,12 @@ export default function IndexCart() {
                 query: { from: router.pathname }
             })
         }
-    }, [authLoading, user.email, router])
+    }, [user.email, router])
+
     return (
-        <>
+        <div>
             <NavigationBar />
-            {/* <Cart /> */}
-        </>
+            {/* <Checkout /> */}
+        </div>
     )
 }
-
-

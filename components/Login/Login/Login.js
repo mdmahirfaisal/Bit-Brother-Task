@@ -29,6 +29,7 @@ const Login = () => {
                     <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
                         <form onSubmit={handleSubmit(onLoginSubmit)}>
                             <div className="mb-6">
+                                <p className='text-gray-400 font-medium'>Email</p>
                                 <input
                                     type="email"  {...register("userEmail")}
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -36,6 +37,7 @@ const Login = () => {
                             </div>
 
                             <div className="mb-6">
+                                <p className='text-gray-400 font-medium'>Password</p>
                                 <input
                                     type="password" {...register("userPassword")}
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -55,7 +57,7 @@ const Login = () => {
                                 data-mdb-ripple="true"
                                 data-mdb-ripple-color="light"
                             >
-                                Sign up
+                                Sign in
                             </button>
 
                             <div

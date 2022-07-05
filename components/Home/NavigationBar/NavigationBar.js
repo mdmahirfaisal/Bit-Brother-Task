@@ -1,15 +1,18 @@
 import { useRouter } from 'next/router';
 import React from 'react';
+import Link from 'next/link';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import useFirebase from '../../Login/Firebase/useFirebase';
+import { FaCartPlus } from 'react-icons/fa';
 
 // class name 
-const navLinkClassName = "cursor-pointer block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-200 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ml-5 mt-2";
+const navLinkClassName = "relative cursor-pointer block py-2 pr-4 pl-3 text-gray-700  md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ml-5 mt-2";
 
 const NavigationBar = () => {
     const router = useRouter();
-    const { user, authLoading } = useSelector(state => state.auth);
+    const { user } = useSelector(state => state.auth);
+    const { totalCartQuantity } = useSelector(state => state.products);
     const { logOut } = useFirebase();
 
     const handleLogout = () => {
@@ -41,8 +44,8 @@ const NavigationBar = () => {
                     <div className='col-span-12 md:col-span-9'>
                         <div className="md:flex items-center lg:w-[50%] mt-4 md:mt-0 md:text-sm md:font-medium">
                             <h2 onClick={() => router.push("/")} className="self-center text-xl lg:text-2xl cursor-pointer font-semibold whitespace-nowrap dark:text-white">Bit Brothers</h2>
-                            <p onClick={() => router.push("/")} className={navLinkClassName}>Home</p>
-                            <p onClick={() => router.push("/cart")} className={navLinkClassName}>Cart</p>
+                            <Link href="/" ><a className={navLinkClassName}>Home</a></Link>
+                            <Link href="/cart" ><a className={navLinkClassName}><FaCartPlus className='text-[20px]' /> <span className='mt-[-10px] absolute top-0 right-0 mr-[-10px] w-[20px] h-[20px] rounded-[50%] text-center text-[10px] text-gray-200 font-semibold bg-red-500'> {totalCartQuantity} </span> </a></Link>
                         </div>
                     </div>
                     <div className="flex items-center gap-2 col-span-10 md:col-span-3">

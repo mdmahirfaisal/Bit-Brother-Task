@@ -10,13 +10,12 @@ const Register = () => {
 
     const { register, handleSubmit, reset } = useForm();
     const onRegisterSubmit = data => {
-        console.log(data)
         registerUser(data.userEmail, data.userPassword, data.userName)
         reset()
     };
 
     return (
-        <div className="w-[100%] md:h-[100vh]">
+        <div className="w-[100%] md:min-h-[100vh]">
             <NavigationBar />
             <div className="container px-6 py-12 h-full">
                 <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
@@ -30,12 +29,14 @@ const Register = () => {
                     <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
                         <form onSubmit={handleSubmit(onRegisterSubmit)}>
                             <div className="mb-6">
+                                <p className='text-gray-400 font-medium'>Full Name</p>
                                 <input
                                     type="text" {...register("userName")}
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                     placeholder="Full Name" required />
                             </div>
                             <div className="mb-6">
+                                <p className='text-gray-400 font-medium'>Email</p>
                                 <input
                                     type="email" {...register("userEmail")}
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
@@ -43,6 +44,7 @@ const Register = () => {
                             </div>
 
                             <div className="mb-6">
+                                <p className='text-gray-400 font-medium'>Password</p>
                                 <input
                                     type="password" {...register("userPassword")}
                                     className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"

@@ -17,13 +17,12 @@ const useFirebase = () => {
     const googleProvider = new GoogleAuthProvider();
 
     // Handle google login
-    const signInWithGoogle = (location, navigate) => {
+    const signInWithGoogle = () => {
         dispatch(handleLoading(true));
         signInWithPopup(auth, googleProvider)
             .then((result) => {
                 dispatch(handleSignedInUser(result.user))
                 dispatch(handleLoading(false));
-                router.push("/")
             })
             .catch((error) => {
                 Swal.fire({
@@ -38,9 +37,11 @@ const useFirebase = () => {
 
     // handle register with email password or name
     const registerUser = (email, Password, name) => {
+        dispatch(handleLoading(true));
         createUserWithEmailAndPassword(auth, email, Password)
             .then(() => {
                 dispatch(handleSignedInUser({ email, displayName: name }))
+                dispatch(handleLoading(false));
                 router.push("/")
             })
             .catch((error) => {
@@ -56,9 +57,11 @@ const useFirebase = () => {
 
     // handle login with email and password
     const loginUser = (email, password) => {
+        dispatch(handleLoading(true));
         signInWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 dispatch(handleSignedInUser(user))
+                dispatch(handleLoading(false));
                 router.push("/")
             })
             .catch((error) => {
@@ -66,7 +69,6 @@ const useFirebase = () => {
                     icon: 'error',
                     title: 'Oops...',
                     text: `${error.message} `,
-
                 })
             })
             .finally(() => dispatch(handleLoading(false)));
