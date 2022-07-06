@@ -13,48 +13,47 @@ const Cart = () => {
     const [isQnUpdated, setIsQnUpdated] = useState(false)
 
     // load cart data and sum total product price and total items
-    useEffect(() => {
-        setIsQnUpdated(false)
-        async function loadCartData() {
-            const res = await axios.get(`http://localhost:3000//api/cart?email=${user?.email}`)
-                .catch(err => console.log(err));
-            setCartData(res?.data)
-            // Sum //
-            let priceSum = 0
-            let quantitySum = 0
-            res?.data?.reduce((acc, curr) => {
-                priceSum += curr.totalPrice;
-                quantitySum += curr.quantity;
-                return acc
-            }, 0)
-            dispatch(handleTotalCartPrice(priceSum));
-            dispatch(handleTotalCartQuantity(quantitySum));
-        }
-        loadCartData()
-    }, [dispatch, user.email, isQnUpdated])
+    // useEffect(() => {
+    //     setIsQnUpdated(false);
+    //     async function loadCartData() {
+    //         const res = await axios.get(`http://localhost:3000/api/cart?email=${user?.email}`)
+    //             .catch(err => console.log(err));
+    //         setCartData(res?.data)
+    //         // Sum //
+    //         let priceSum = 0
+    //         let quantitySum = 0
+    //         res?.data?.reduce((acc, curr) => {
+    //             priceSum += curr.totalPrice;
+    //             quantitySum += curr.quantity;
+    //             return acc
+    //         }, 0)
+    //         dispatch(handleTotalCartPrice(priceSum));
+    //         dispatch(handleTotalCartQuantity(quantitySum));
+    //     }
+    //     loadCartData()
+    // }, [dispatch, user.email, isQnUpdated])
 
 
     // quantity 
-    const handleIncrement = (data, incDec) => {
+    const handleIncrement = (data) => {
         const quantity = parseFloat(data.quantity)
         const pri = parseFloat(data.price)
         const totalPri = parseFloat(data.totalPrice)
-        const checkCondition = incDec === "plus" ? quantity <= 9 : incDec === "minus" ? quantity > 1 : null;
-        if (checkCondition) {
+        if (quantity <= 9) {
             data.quantity = quantity + 1;
             data.totalPrice = totalPri + pri;
-            const url = `http://localhost:3000/api/cart?id=${data?._id}`;
+            // const url = `http://localhost:3000/api/cart?id=${data?._id}`;
 
-            axios.put(url, data)
-                .then((res) => {
-                    console.log(res.data);
-                    if (res.data.modifiedCount) {
-                        setIsQnUpdated(true)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            // // axios.put(url, data)
+            // //     .then((res) => {
+            // //         console.log(res.data);
+            // //         if (res.data.modifiedCount) {
+            // //             setIsQnUpdated(true)
+            // //         }
+            // //     })
+            // //     .catch((error) => {
+            // //         console.log(error);
+            // //     });
         }
     };
 
@@ -66,34 +65,34 @@ const Cart = () => {
         if (quantity > 1) {
             data.quantity = quantity - 1;
             data.totalPrice = totalPri - pri;
-            const url = `http://localhost:3000/api/cart?id=${data?._id}`;
-            axios.put(url, data)
-                .then((res) => {
-                    console.log(res.data);
-                    if (res.data.modifiedCount) {
-                        setIsQnUpdated(true)
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            //     const url = `http://localhost:3000/api/cart?id=${data?._id}`;
+            //     axios.put(url, data)
+            //         .then((res) => {
+            //             console.log(res.data);
+            //             if (res.data.modifiedCount) {
+            //                 setIsQnUpdated(true)
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log(error);
+            //         });
         }
     }
 
     // product remove from cart
     const handRemoveProduct = (id) => {
-        fetch(`http://localhost:3000/api/cart?id=${id}`, {
-            method: 'DELETE'
-        })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if (data.deletedCount > 0) {
-                    setCartData(cartData.filter(data => data._id !== id));
-                    setIsQnUpdated(true)
-                }
-            })
-            .catch(err => console.log(err))
+        // fetch(`http://localhost:3000/api/cart?id=${id}`, {
+        //     method: 'DELETE'
+        // })
+        //     .then(res => res.json())
+        //     .then(data => {
+        //         console.log(data)
+        //         if (data.deletedCount > 0) {
+        //             setCartData(cartData.filter(data => data._id !== id));
+        //             setIsQnUpdated(true)
+        //         }
+        //     })
+        //     .catch(err => console.log(err))
     };
 
     // go to checkout 
@@ -109,7 +108,7 @@ const Cart = () => {
 
                     <div className="grid grid-cols-12 gap-5">
                         <div className='col-span-12 md:col-span-8'>
-                            {cartData.length ? cartData?.map(data => <div key={data?._id}
+                            {cartData?.length ? cartData?.map(data => <div key={data?._id}
                                 className="relative shadow-md flex gap-1 md:gap-2 lg:gap-3 rounded-xl p-3 bg-white mb-5">
                                 <img className="rounded-xl w-[200px] h-[150px]" src={data.img} alt="products" />
                                 <div className="mt-3 ">

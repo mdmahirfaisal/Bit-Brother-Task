@@ -19,7 +19,7 @@ export default function IndexCheckout() {
     return (
         <div>
             <NavigationBar />
-            {/* <Checkout /> */}
+            <Checkout />
         </div>
     )
 }

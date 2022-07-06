@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, updateProfile, } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signOut, onAuthStateChanged, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, } from "firebase/auth";
 import Swal from 'sweetalert2';
 import { handleSignedInUser, handleLoading } from '../../../redux/Slices/AuthSlice';
 import { useDispatch } from 'react-redux';
