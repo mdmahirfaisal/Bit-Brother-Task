@@ -13,25 +13,25 @@ const Cart = () => {
     const [isQnUpdated, setIsQnUpdated] = useState(false)
 
     // load cart data and sum total product price and total items
-    // useEffect(() => {
-    //     setIsQnUpdated(false);
-    //     async function loadCartData() {
-    //         const res = await axios.get(`http://localhost:3000/api/cart?email=${user?.email}`)
-    //             .catch(err => console.log(err));
-    //         setCartData(res?.data)
-    //         // Sum //
-    //         let priceSum = 0
-    //         let quantitySum = 0
-    //         res?.data?.reduce((acc, curr) => {
-    //             priceSum += curr.totalPrice;
-    //             quantitySum += curr.quantity;
-    //             return acc
-    //         }, 0)
-    //         dispatch(handleTotalCartPrice(priceSum));
-    //         dispatch(handleTotalCartQuantity(quantitySum));
-    //     }
-    //     loadCartData()
-    // }, [dispatch, user.email, isQnUpdated])
+    useEffect(() => {
+        setIsQnUpdated(false);
+        async function loadCartData() {
+            const res = await axios.get(`/api/cart?email=${user?.email}`)
+                .catch(err => console.log(err));
+            setCartData(res?.data)
+            // Sum //
+            let priceSum = 0
+            let quantitySum = 0
+            res?.data?.reduce((acc, curr) => {
+                priceSum += curr.totalPrice;
+                quantitySum += curr.quantity;
+                return acc
+            }, 0)
+            dispatch(handleTotalCartPrice(priceSum));
+            dispatch(handleTotalCartQuantity(quantitySum));
+        }
+        loadCartData()
+    }, [dispatch, user.email, isQnUpdated])
 
 
     // quantity 
@@ -42,18 +42,18 @@ const Cart = () => {
         if (quantity <= 9) {
             data.quantity = quantity + 1;
             data.totalPrice = totalPri + pri;
-            // const url = `http://localhost:3000/api/cart?id=${data?._id}`;
+            const url = `/api/cart?id=${data?._id}`;
 
-            // // axios.put(url, data)
-            // //     .then((res) => {
-            // //         console.log(res.data);
-            // //         if (res.data.modifiedCount) {
-            // //             setIsQnUpdated(true)
-            // //         }
-            // //     })
-            // //     .catch((error) => {
-            // //         console.log(error);
-            // //     });
+            axios.put(url, data)
+                .then((res) => {
+                    console.log(res.data);
+                    if (res.data.modifiedCount) {
+                        setIsQnUpdated(true)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     };
 
@@ -65,34 +65,34 @@ const Cart = () => {
         if (quantity > 1) {
             data.quantity = quantity - 1;
             data.totalPrice = totalPri - pri;
-            //     const url = `http://localhost:3000/api/cart?id=${data?._id}`;
-            //     axios.put(url, data)
-            //         .then((res) => {
-            //             console.log(res.data);
-            //             if (res.data.modifiedCount) {
-            //                 setIsQnUpdated(true)
-            //             }
-            //         })
-            //         .catch((error) => {
-            //             console.log(error);
-            //         });
+            const url = `/api/cart?id=${data?._id}`;
+            axios.put(url, data)
+                .then((res) => {
+                    console.log(res.data);
+                    if (res.data.modifiedCount) {
+                        setIsQnUpdated(true)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }
 
     // product remove from cart
     const handRemoveProduct = (id) => {
-        // fetch(`http://localhost:3000/api/cart?id=${id}`, {
-        //     method: 'DELETE'
-        // })
-        //     .then(res => res.json())
-        //     .then(data => {
-        //         console.log(data)
-        //         if (data.deletedCount > 0) {
-        //             setCartData(cartData.filter(data => data._id !== id));
-        //             setIsQnUpdated(true)
-        //         }
-        //     })
-        //     .catch(err => console.log(err))
+        fetch(`/api/cart?id=${id}`, {
+            method: 'DELETE'
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                if (data.deletedCount > 0) {
+                    setCartData(cartData.filter(data => data._id !== id));
+                    setIsQnUpdated(true)
+                }
+            })
+            .catch(err => console.log(err))
     };
 
     // go to checkout 

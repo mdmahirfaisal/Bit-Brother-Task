@@ -1,15 +1,27 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import NavigationBar from '../components/Home/NavigationBar/NavigationBar';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../components/Home/Footer/Footer';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
-export default function ProductInfo({ productData }) {
-    const router = useRouter();
+export default function ProductInfo() {
+    const [resultData, setProductData] = useState({});
     const { user } = useSelector(state => state.auth);
-    const resultData = productData?.find((data) => data._id === router?.query?.productInfo)
+    const router = useRouter();
+    const pId = router?.query?.productInfo
+
+    useEffect(() => {
+        async function loadSingleData() {
+            const res = await axios.get(`/api/singleProduct?id=${pId}`)
+                .catch(err => console.log(err))
+            setProductData(res?.data)
+        }
+        loadSingleData()
+    }, [pId, router])
+
+
     const [quantity, setQuantity] = useState(1)
 
     const handleIncrement = () => {
@@ -27,17 +39,17 @@ export default function ProductInfo({ productData }) {
             router.push("/login")
         }
         else {
-            // axios.post('http://localhost:3000/api/cart', cartData)
-            //     .then(res => {
-            //         console.log(res);
-            //         Swal.fire({
-            //             icon: 'success',
-            //             title: 'This product added to cart',
-            //             showConfirmButton: false,
-            //             timer: 1500
-            //         })
-            //     })
-            //     .catch(err => console.log(err))
+            axios.post('/api/cart', cartData)
+                .then(res => {
+                    console.log(res);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'This product added to cart',
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
+                })
+                .catch(err => console.log(err))
         }
     }
 
@@ -75,20 +87,3 @@ export default function ProductInfo({ productData }) {
         </>
     )
 }
-
-// export const getStaticProps = async () => {
-//     const res = await axios.get(`http://localhost:3000/api/products`);
-//     return {
-//         props: {
-//             productData: res.data,
-//         },
-//         revalidate: 10,
-//     };
-// };
-// export async function getStaticPaths() {
-//     return {
-//         paths: [], //indicates that no page needs be created at build time
-//         fallback: "blocking", //indicates the type of fallback
-//     };
-// }
-

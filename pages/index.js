@@ -5,8 +5,19 @@ import Header from '../components/Home/Header/Header';
 import Products from '../components/Home/Products/Products';
 import axios from 'axios';
 import Footer from '../components/Home/Footer/Footer';
+import { useEffect, useState } from 'react';
 
-export default function Home({ productsData }) {
+export default function Home() {
+    const [productsData, setProductData] = useState([]);
+    useEffect(() => {
+        async function loadSingleData() {
+            const res = await axios.get(`/api/products`)
+                .catch(err => console.log(err))
+            setProductData(res?.data)
+        }
+        loadSingleData()
+    }, [])
+
     return (
         <div className={styles.container}>
             <Head>
@@ -26,13 +37,3 @@ export default function Home({ productsData }) {
         </div>
     )
 }
-
-// export const getStaticProps = async () => {
-//     const res = await axios.get(`http://localhost:3000/api/products`);
-//     return {
-//         props: {
-//             productsData: res.data,
-//         },
-//         revalidate: 10
-//     };
-// };
