@@ -3,10 +3,11 @@ import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/router';
+import useFirebase from '../../Login/Firebase/useFirebase';
 
 const Checkout = () => {
     const router = useRouter();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useFirebase();
     const { totalCartPrice, totalCartQuantity } = useSelector(state => state.products);
     const { register, handleSubmit, reset } = useForm();
     const [deliveryInfo, setDeliveryInfo] = useState({});

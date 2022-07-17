@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import Checkout from '../components/Home/Checkout/Checkout'
 import NavigationBar from '../components/Home/NavigationBar/NavigationBar'
+import useFirebase from '../components/Login/Firebase/useFirebase'
 
 export default function IndexCheckout() {
-    const { user } = useSelector(state => state.auth)
+    const { user } = useFirebase();
     // const router = useRouter()
     // useEffect(() => {
     //     if (!user.email) {
