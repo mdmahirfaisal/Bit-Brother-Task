@@ -4,15 +4,17 @@ import NavigationBar from '../components/Home/NavigationBar/NavigationBar';
 import Header from '../components/Home/Header/Header';
 import Products from '../components/Home/Products/Products';
 import Footer from '../components/Home/Footer/Footer';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchProductsData } from '../redux/Slices/ProductsSlice';
 import { useEffect } from 'react';
 
-export default function Home({ productsData }) {
+export default function Home() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(fetchProductsData())
     }, [dispatch])
+
+    const { loading } = useSelector(state => state.products)
 
     return (
         <div className={styles.container}>
@@ -25,7 +27,11 @@ export default function Home({ productsData }) {
                 <NavigationBar />
                 <Header />
                 <div className='max-w-[1280px] mx-auto'>
-                    <Products />
+                    {loading ?
+                        <h2 className='text-green-600 text-3xl text-center my-[10vw]'>Loading...</h2>
+                        :
+                        <Products />
+                    }
                 </div>
                 <Footer />
 

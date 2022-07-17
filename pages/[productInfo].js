@@ -60,31 +60,35 @@ export default function ProductInfo() {
         <>
             <NavigationBar />
             <div className='max-w-[1280px] mx-auto'>
-                <div className="w-[98%] md:w-[90%] min-h-[50vh] lg:w-[80%] mx-auto grid grid-cols-12 gap-3 mt-[5vw] border">
 
-                    <div className="col-span-12 md:col-span-5">
-                        <img src={singleProduct?.img} className="w-full" alt="product" />
-                    </div>
+                {loading ? <h2 className='text-green-600 text-3xl text-center my-[10vw]'>Loading...</h2>
+                    :
+                    <div className="w-[98%] md:w-[90%] min-h-[50vh] lg:w-[80%] mx-auto grid grid-cols-12 gap-3 mt-[5vw] border">
 
-                    <div className="col-span-12 md:col-span-7 md:border-l p-2">
-                        <div className="">
-                            <h2 className='text-3xl md:text-4xl font-medium'>{singleProduct?.product}</h2>
-                            <p className='text-lg font-medium'>{singleProduct?.desc?.slice(0, 100)}</p>
-                            <h1 className='my-5 text-3xl md:text-4xl font-semibold '>$ {parseFloat(singleProduct?.price * quantity)}</h1>
+                        <div className="col-span-12 md:col-span-5">
+                            <img src={singleProduct?.img} className="w-full" alt="product" />
                         </div>
 
-                        <div className="flex items-center justify-between w-[40%] border">
-                            <button onClick={handleDecrement} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaMinus /></button>
-                            <p className='text-2xl font-semibold'> {quantity} </p>
-                            <button onClick={handleIncrement} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaPlus /></button>
-                        </div>
-                        <div className='grid grid-cols-2 gap-4 mt-5'>
-                            <button className='text-lg text-white bg-[#2abbe8] text-white font-semibold py-2'>Buy Now</button>
-                            <button onClick={handleAddToCart} className='text-lg text-white bg-[#f57224] text-white font-semibold py-2'>Add To Cart</button>
-                        </div>
-                    </div>
+                        <div className="col-span-12 md:col-span-7 md:border-l p-2">
+                            <div className="">
+                                <h2 className='text-3xl md:text-4xl font-medium'>{singleProduct?.product}</h2>
+                                <p className='text-lg font-medium'>{singleProduct?.desc?.slice(0, 100)}</p>
+                                <h1 className='my-5 text-3xl md:text-4xl font-semibold '>$ {parseFloat(singleProduct?.price * quantity)}</h1>
+                            </div>
 
-                </div>
+                            <div className="flex items-center justify-between w-[40%] border">
+                                <button onClick={handleDecrement} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaMinus /></button>
+                                <p className='text-2xl font-semibold'> {quantity} </p>
+                                <button onClick={handleIncrement} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaPlus /></button>
+                            </div>
+                            <div className='grid grid-cols-2 gap-4 mt-5'>
+                                <button className='text-lg text-white bg-[#2abbe8] text-white font-semibold py-2'>Buy Now</button>
+                                <button onClick={handleAddToCart} className='text-lg text-white bg-[#f57224] text-white font-semibold py-2'>Add To Cart</button>
+                            </div>
+                        </div>
+
+                    </div>}
+
             </div>
             <Footer />
         </>

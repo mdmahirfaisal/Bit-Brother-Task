@@ -10,10 +10,9 @@ export const fetchProductsData = createAsyncThunk(
 export const fetchSingleProduct = createAsyncThunk(
     "product/fetchSingleProduct", async (productId) => {
         console.log(productId);
-        const res = await axios(`/api/singleProduct?id=${productId}`)
-        // .then(res => res.json())
-        console.log(res.data);
-        return res.data;
+        const res = await fetch(`/api/singleProduct?id=${productId}`)
+            .then(res => res.json())
+        return res;
     })
 
 
