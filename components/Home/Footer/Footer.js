@@ -1,4 +1,8 @@
 import React from 'react';
+import { BsFacebook } from 'react-icons/bs';
+import { AiFillTwitterCircle } from 'react-icons/ai';
+import { AiFillInstagram } from 'react-icons/ai';
+import { BsLinkedin } from 'react-icons/bs';
 
 const Footer = () => {
     return (
@@ -36,10 +40,10 @@ const Footer = () => {
                     <div className="footer-col">
                         <h4>follow us</h4>
                         <div className="social-links">
-                            <a href="#"><i className="fab fa-facebook-f"></i></a>
-                            <a href="#"><i className="fab fa-twitter"></i></a>
-                            <a href="#"><i className="fab fa-instagram"></i></a>
-                            <a href="#"><i className="fab fa-linkedin-in"></i></a>
+                            <a href="#"><BsFacebook className='text-3xl mx-auto mt-[5px]' /></a>
+                            <a href="#"><AiFillTwitterCircle className='text-3xl mx-auto mt-[5px]' /></a>
+                            <a href="#"><AiFillInstagram className='text-3xl mx-auto mt-[5px]' /></a>
+                            <a href="#"><BsLinkedin className='text-3xl mx-auto mt-[5px] rounded-xl' /></a>
                         </div>
                     </div>
                 </div>

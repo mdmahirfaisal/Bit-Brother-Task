@@ -6,15 +6,15 @@ import NavigationBar from '../components/Home/NavigationBar/NavigationBar'
 
 export default function IndexCheckout() {
     const { user } = useSelector(state => state.auth)
-    const router = useRouter()
-    useEffect(() => {
-        if (!user.email) {
-            router.push({
-                pathname: '/login',
-                query: { from: router.pathname }
-            })
-        }
-    }, [user.email, router])
+    // const router = useRouter()
+    // useEffect(() => {
+    //     if (!user.email) {
+    //         router.push({
+    //             pathname: '/login',
+    //             query: { from: router.pathname }
+    //         })
+    //     }
+    // }, [user.email, router])
 
     return (
         <div>

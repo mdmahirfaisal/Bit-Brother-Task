@@ -3,20 +3,16 @@ import styles from '../styles/Home.module.css'
 import NavigationBar from '../components/Home/NavigationBar/NavigationBar';
 import Header from '../components/Home/Header/Header';
 import Products from '../components/Home/Products/Products';
-import axios from 'axios';
 import Footer from '../components/Home/Footer/Footer';
-import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchProductsData } from '../redux/Slices/ProductsSlice';
+import { useEffect } from 'react';
 
-export default function Home() {
-    const [productsData, setProductData] = useState([]);
+export default function Home({ productsData }) {
+    const dispatch = useDispatch();
     useEffect(() => {
-        async function loadSingleData() {
-            const res = await axios.get(`/api/products`)
-                .catch(err => console.log(err))
-            setProductData(res?.data)
-        }
-        loadSingleData()
-    }, [])
+        dispatch(fetchProductsData())
+    }, [dispatch])
 
     return (
         <div className={styles.container}>
@@ -29,7 +25,7 @@ export default function Home() {
                 <NavigationBar />
                 <Header />
                 <div className='max-w-[1280px] mx-auto'>
-                    <Products productsData={productsData} />
+                    <Products />
                 </div>
                 <Footer />
 
@@ -37,3 +33,11 @@ export default function Home() {
         </div>
     )
 }
+
+// export async function getStaticProps() {
+//     const res = await axios.get(`http://localhost:3000/api/products`)
+
+//     return {
+//         props: { productsData: res.data }
+//     }
+// }

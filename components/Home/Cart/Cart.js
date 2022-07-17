@@ -3,11 +3,18 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleTotalCartPrice, handleTotalCartQuantity } from '../../../redux/Slices/ProductsSlice';
+import { IoMdClose } from 'react-icons/io';
+import { FaPlus } from 'react-icons/fa';
+import { FaMinus } from 'react-icons/fa';
+import Swal from 'sweetalert2';
+import useFirebase from '../../Login/Firebase/useFirebase';
+
 
 const Cart = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-    const { user } = useSelector(state => state.auth);
+    const { user } = useFirebase();
+    console.log(user);
     const { totalCartPrice, totalCartQuantity } = useSelector(state => state.products);
     const [cartData, setCartData] = useState([]);
     const [isQnUpdated, setIsQnUpdated] = useState(false)
@@ -15,22 +22,24 @@ const Cart = () => {
     // load cart data and sum total product price and total items
     useEffect(() => {
         setIsQnUpdated(false);
-        async function loadCartData() {
-            const res = await axios.get(`/api/cart?email=${user?.email}`)
-                .catch(err => console.log(err));
-            setCartData(res?.data)
-            // Sum //
-            let priceSum = 0
-            let quantitySum = 0
-            res?.data?.reduce((acc, curr) => {
-                priceSum += curr.totalPrice;
-                quantitySum += curr.quantity;
-                return acc
-            }, 0)
-            dispatch(handleTotalCartPrice(priceSum));
-            dispatch(handleTotalCartQuantity(quantitySum));
+        if (user.email) {
+            async function loadCartData() {
+                const res = await axios.get(`/api/cart?email=${user?.email}`)
+                    .catch(err => console.log(err));
+                setCartData(res?.data)
+                // Sum //
+                let priceSum = 0
+                let quantitySum = 0
+                res?.data?.reduce((acc, curr) => {
+                    priceSum += curr.totalPrice;
+                    quantitySum += curr.quantity;
+                    return acc
+                }, 0)
+                dispatch(handleTotalCartPrice(priceSum));
+                dispatch(handleTotalCartQuantity(quantitySum));
+            }
+            loadCartData()
         }
-        loadCartData()
     }, [dispatch, user.email, isQnUpdated])
 
 
@@ -42,8 +51,8 @@ const Cart = () => {
         if (quantity <= 9) {
             data.quantity = quantity + 1;
             data.totalPrice = totalPri + pri;
-            const url = `/api/cart?id=${data?._id}`;
 
+            const url = `/api/cart?id=${data?._id}`;
             axios.put(url, data)
                 .then((res) => {
                     console.log(res.data);
@@ -81,18 +90,29 @@ const Cart = () => {
 
     // product remove from cart
     const handRemoveProduct = (id) => {
-        fetch(`/api/cart?id=${id}`, {
-            method: 'DELETE'
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't remove",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/api/cart?id=${id}`, {
+                    method: 'DELETE'
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.deletedCount > 0) {
+                            setCartData(cartData.filter(data => data._id !== id));
+                            setIsQnUpdated(true)
+                        }
+                    })
+                    .catch(err => console.log(err))
+            }
         })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data)
-                if (data.deletedCount > 0) {
-                    setCartData(cartData.filter(data => data._id !== id));
-                    setIsQnUpdated(true)
-                }
-            })
-            .catch(err => console.log(err))
     };
 
     // go to checkout 
@@ -110,7 +130,7 @@ const Cart = () => {
                         <div className='col-span-12 md:col-span-8'>
                             {cartData?.length ? cartData?.map(data => <div key={data?._id}
                                 className="relative shadow-md flex gap-1 md:gap-2 lg:gap-3 rounded-xl p-3 bg-white mb-5">
-                                <img className="rounded-xl w-[200px] h-[150px]" src={data.img} alt="products" />
+                                <img className="rounded-xl w-[200px] h-[150px]" src={data?.img} alt="products" />
                                 <div className="mt-3 ">
                                     <h2 className='text-2xl font-semibold'>{data?.product}</h2>
                                     <p className=''>{data?.desc?.slice(0, 60)}</p>
@@ -118,12 +138,12 @@ const Cart = () => {
                                 <div className='w-[30%]'>
                                     <h1 className='my-2 text-2xl font-semibold'>$ {data?.price} </h1>
                                     <div className="flex items-center justify-between w-full h-[50px] border">
-                                        <button onClick={() => handleDecrement(data, "minus")} className='text-4xl font-bold bg-gray-200 px-3 pb-2 hover:bg-gray-300'> - </button>
+                                        <button onClick={() => handleDecrement(data)} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaMinus /></button>
                                         <p className='text-2xl font-semibold'> {data?.quantity} </p>
-                                        <button onClick={() => handleIncrement(data, "plus")} className='text-4xl font-bold bg-gray-200 px-3 pb-2 hover:bg-gray-300'> + </button>
+                                        <button onClick={() => handleIncrement(data)} className='text-xl  font-bold bg-gray-100 px-3 py-[16px] text-gray-500 hover:bg-gray-300'><FaPlus /> </button>
                                     </div>
                                 </div>
-                                <button onClick={() => handRemoveProduct(data._id)} className=' float-right mr-[-20px] mt-[-25px] h-8 w-8 rounded-[50%] text-lg bg-red-500 text-white font-bold '>X</button>
+                                <button onClick={() => handRemoveProduct(data._id)} className=' float-right mr-[-20px] mt-[-25px] h-8 w-8 rounded-[50%] px-[5px] text-lg bg-red-500 text-white'><IoMdClose className='text-xl' /></button>
                             </div>)
                                 :
                                 <>

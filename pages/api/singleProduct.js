@@ -6,6 +6,8 @@ export default async function handler(req, res) {
 
     if (req.method === 'GET') {
         const id = req.query.id
+
+        console.log(id);
         const query = { '_id': ObjectId(id) }
         const result = await products.findOne(query)
         res.status(201).json(result);

@@ -13,8 +13,8 @@ export default async function handler(req, res) {
         res.status(200).json(result);
     }
     else if (req.method === 'POST') {
-        const singleNews = req.body;
-        const result = await cart.insertOne(singleNews);
+        const product = req.body;
+        const result = await cart.insertOne(product);
         res.status(201).json(result);
     }
     // delete news
